@@ -1,0 +1,25 @@
+prometheusOperator:
+  admissionWebhooks:
+    enabled: false
+    patch:
+      enabled: false
+alertmanager:
+  enabled: false
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+grafana:
+  additionalDataSources:
+  - name: Loki
+    access: proxy
+    editable: false
+    type: loki
+    url: http://loki.monitoring.svc.cluster.local:3100
+    version: 1
+  - name: Tempo
+    access: proxy
+    editable: false
+    type: tempo
+    url: http://tempo.monitoring.svc.cluster.local:3100
+    version: 1

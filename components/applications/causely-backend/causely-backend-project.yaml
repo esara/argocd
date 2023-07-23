@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: causely-backend
+  namespace: argocd
+spec:
+  description: "causely-backend project"
+  destinations:
+    - name: "*"
+      namespace: causely
+      server: https://kubernetes.default.svc
+    - name: '*'
+      namespace: kube-system
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - https://github.com/causely/causely.git

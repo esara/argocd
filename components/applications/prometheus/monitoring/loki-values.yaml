@@ -1,0 +1,11 @@
+gateway:
+  enabled: false
+monitoring:
+  selfMonitoring:
+    enabled: false
+  lokiCanary:
+    enabled: false
+singleBinary:
+  replicas: 1
+test:
+  enabled: false

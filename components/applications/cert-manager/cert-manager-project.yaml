@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cert-manager
+  namespace: argocd
+spec:
+  description: "cert-manager project"
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: CustomResourceDefinition
+    - group: '*'
+      kind: ClusterRoleBinding
+    - group: '*'
+      kind: ClusterRole
+    - group: '*'
+      kind: MutatingWebhookConfiguration
+    - group: '*'
+      kind: ValidatingWebhookConfiguration
+  destinations:
+    - name: "*"
+      namespace: cert-manager
+      server: https://kubernetes.default.svc
+    - name: '*'
+      namespace: kube-system
+      server: https://kubernetes.default.svc
+  sourceRepos:
+    - https://charts.jetstack.io

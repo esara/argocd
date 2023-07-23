@@ -1,0 +1,31 @@
+GCP:
+  enabled: false
+
+image:
+  repository: quay.io/causely
+  tag: 0.0.19-287-g2aab80c41cfa02cd
+
+gateway:
+  tls: false
+  minReplicaCount: 1
+  maxReplicaCount: 10
+
+api:
+  minReplicaCount: 1
+  maxReplicaCount: 1
+
+analysis:
+  config:
+    repository:
+       persist: true
+
+ui:
+  image:
+    repository: quay.io/causely
+  replicas: 1
+
+otlp:
+  endpoint: http://tempo.monitoring:4318
+
+environment:
+  domain: chaos1.causely.app
