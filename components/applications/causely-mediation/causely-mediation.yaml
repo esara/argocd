@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: causely-mediation
+  namespace: argocd
+spec:
+  project: causely-mediation
+  destination:
+    namespace: causely-mediation
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/causely/causely.git
+    path: helm/causely
+    helm:
+      parameters:
+        - name: image.tag
+          value: latest
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

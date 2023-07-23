@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: istio
+  namespace: argocd
+spec:
+  description: "Istio deployment"
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: CustomResourceDefinition
+    - group: '*'
+      kind: ClusterRoleBinding
+    - group: '*'
+      kind: ClusterRole
+    - group: '*'
+      kind: ValidatingWebhookConfiguration
+    - group: '*'
+      kind: MutatingWebhookConfiguration
+  sourceRepos:
+    - https://istio-release.storage.googleapis.com/charts
+  destinations:
+    - name: '*'
+      namespace: kube-system
+      server: https://kubernetes.default.svc
+    - name: '*'
+      namespace: istio-ingress
+      server: https://kubernetes.default.svc
+    - name: '*'
+      namespace: istio-system
+      server: https://kubernetes.default.svc

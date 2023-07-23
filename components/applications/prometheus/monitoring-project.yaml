@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  description: "Monitoring Stack deployment"
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: ClusterRoleBinding
+    - group: '*'
+      kind: ClusterRole
+    - group: '*'
+      kind: CustomResourceDefinition
+    - group: '*'
+      kind: ValidatingWebhookConfiguration
+    - group: '*'
+      kind: MutatingWebhookConfiguration
+  sourceRepos:
+    - https://grafana.github.io/helm-charts
+    - https://prometheus-community.github.io/helm-charts
+  destinations:
+    - name: '*'
+      namespace: kube-system
+      server: https://kubernetes.default.svc
+    - name: '*'
+      namespace: monitoring
+      server: https://kubernetes.default.svc

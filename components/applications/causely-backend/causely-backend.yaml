@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: causely-backend
+  namespace: argocd
+spec:
+  project: causely-backend
+  destination:
+    namespace: causely
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/causely/causely.git
+    path: helm/backend
+    helm:
+      parameters:
+        - name: image.tag
+          value: latest
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,53 @@
+alertmanager:
+  enabled: false
+grafana:
+  additionalDataSources:
+    - name: Loki
+      access: proxy
+      editable: false
+      type: loki
+      url: http://loki.monitoring.svc.cluster.local:3100
+      version: 1
+    - name: Tempo
+      access: proxy
+      editable: false
+      type: tempo
+      url: http://tempo.monitoring.svc.cluster.local:3100
+      jsonData:
+        httpMethod: GET
+        serviceMap:
+          datasourceUid: 'prometheus'
+        nodeGraph:
+          enabled: true
+      version: 1
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeScheduler:
+  enabled: false
+prometheus:
+  prometheusSpec:
+    enableRemoteWriteReceiver: true
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+postRenderers:
+  - kustomize:
+      patches:
+        - target:
+            # Ignore these objects from Flux diff as they are mutated from chart hooks
+            kind: (ValidatingWebhookConfiguration|MutatingWebhookConfiguration)
+            name: kube-prometheus-stack-admission
+          patch: |
+            - op: add
+              path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+              value: disabled
+        - target:
+            # Ignore these objects from Flux diff as they are mutated at apply time but not at dry-run time
+            kind: PrometheusRule
+          patch: |
+            - op: add
+              path: /metadata/annotations/helm.toolkit.fluxcd.io~1driftDetection
+              value: disabled

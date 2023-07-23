@@ -1,0 +1,6 @@
+serviceAccount:
+  create: false
+grafana:
+  sidecar:
+    datasources:
+      enabled: false
