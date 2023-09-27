@@ -9,7 +9,7 @@ spec:
     namespace: causely
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/causely/causely.git
+    repoURL: git@github.com/causely/causely.git
     path: helm/backend
     helm:
       parameters:

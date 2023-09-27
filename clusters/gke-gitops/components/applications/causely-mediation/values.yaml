@@ -1,0 +1,65 @@
+image:
+  tag: 0.0.19-469-g080b7ac10dd655de
+
+executor:
+  enabled: true
+
+mediator:
+  gateway:
+    host: gw.causely.app
+
+scrapers:
+  opentelemetry:
+    enabled: true
+  istio:
+    enabled: true
+  prometheus:
+    enabled: true
+    exporters:
+      chaosmania:
+        entities:
+          - entityType: Application
+            metrics:
+              - resourceName: TransactionCount
+                resourceAttribute: Usage
+                createIfMissing: true
+                defaultCapacity: 40.0
+                query: "sum by (namespace, service) (rate(chaosmania_processed_transactions_duration_count[1m]))"
+              - resourceName: TransactionDuration
+                resourceAttribute: Usage
+                createIfMissing: true
+                defaultCapacity: 1.0
+                query: "sum by (namespace, service) (rate(chaosmania_processed_transactions_duration_sum[1m]) / (rate(chaosmania_processed_transactions_duration_count[1m]) > 0 or (rate(chaosmania_processed_transactions_duration_count[1m]) + 1)))"
+              - resourceName: DBQueryCount
+                resourceAttribute: Usage
+                createIfMissing: true
+                defaultCapacity: 40.0
+                query: "sum by (namespace, service) (rate(postgres_queries_count[1m]))"
+              - resourceName: DBQueryDuration
+                resourceAttribute: Usage
+                createIfMissing: true
+                defaultCapacity: 1.0
+                query: "sum by (namespace, service) (rate(postgres_queries_sum[1m]) / (rate(postgres_queries_count[1m]) > 0 or (rate(postgres_queries_count[1m]) + 1)))"
+            attributes:
+              id:
+                label: ["service"]
+            connections: # connections represent connection between entities based on the link Query
+              - entityType: DatabaseServer
+                relation: LayeredOver
+              - entityType: Cache
+                relation: LayeredOver
+      quarkus:
+        entities:
+          - entityType: Application
+            metrics:
+              - resourceName: DBQueryCount
+                resourceAttribute: Usage
+                createIfMissing: true
+                defaultCapacity: 40.0
+                query: "sum by (namespace, service) (rate(postgresql_completed_total[1m]))"
+            attributes:
+              id:
+                label: ["service"]
+            connections: # connections represent connection between entities based on the link Query
+              - entityType: DatabaseServer
+                relation: LayeredOver

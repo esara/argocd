@@ -18,4 +18,4 @@ spec:
       namespace: kube-system
       server: https://kubernetes.default.svc
   sourceRepos:
-    - https://github.com/causely/causely.git
+    - git@github.com/causely/causely.git
