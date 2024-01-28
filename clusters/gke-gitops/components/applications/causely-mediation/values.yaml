@@ -1,0 +1,27 @@
+image:
+  tag: 0.0.19-988-ga4bd32b0bb1bae02
+
+scrapers:
+  istio:
+    enabled: true
+  prometheus:
+    enabled: true
+    exporters:
+      chaosmania:
+        entities:
+          - entityType: Application
+            metrics:
+              - attribute: TransactionCount
+                query: "sum by (namespace, service, pod) (rate(chaosmania_processed_transactions_duration_count[1m]))"
+              - attribute: TransactionDuration
+                query: "sum by (namespace, service, pod) (rate(chaosmania_processed_transactions_duration_sum[1m]) / (rate(chaosmania_processed_transactions_duration_count[1m]) > 0 or (rate(chaosmania_processed_transactions_duration_count[1m]) + 1)))"
+              - attribute: DBQueryDuration
+                query: "sum by (namespace, service, pod) (rate(postgres_queries_sum[1m]) / (rate(postgres_queries_count[1m]) > 0 or (rate(postgres_queries_count[1m]) + 1)))"
+            attributes:
+              id:
+                label: [ "pod" ]
+            connections: # connections represent connection between entities based on the link Query
+              - entityType: DatabaseServer
+                relation: LayeredOver
+              - entityType: Cache
+                relation: LayeredOver

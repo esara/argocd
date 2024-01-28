@@ -1,0 +1,19 @@
+GCP:
+  enabled: false
+image:
+  tag: 0.0.19-988-ga4bd32b0bb1bae02
+analysis:
+  config:
+    repository:
+      persist: true
+gateway:
+  tls: false
+  minReplicaCount: 1
+  maxReplicaCount: 10
+api:
+  minReplicaCount: 1
+  maxReplicaCount: 10
+otlp:
+  endpoint: http://tempo.monitoring:4318
+environment:
+  domain: gke-gitops.causely.app
