@@ -1,7 +1,7 @@
 GCP:
   enabled: false
 image:
-  tag: 0.0.19-988-ga4bd32b0bb1bae02
+  tag: v1.0.77-0-ga003eadf8f7d9cdb
 analysis:
   config:
     repository:
