@@ -7,11 +7,17 @@ spec:
   project: monitoring
   source:
     repoURL: https://grafana.github.io/helm-charts
-    chart: loki-stack
-    targetRevision: 2.9.11
+    chart: loki
+    targetRevision: 6.27.0
     helm:
       valueFiles:
         - monitoring/loki-values.yaml
   destination:
     namespace: monitoring
     server: https://kubernetes.default.svc
+  syncPolicy:
+    syncOptions:
+      - ServerSideApply=true
+    automated:
+      prune: true
+      selfHeal: true
