@@ -21,6 +21,7 @@ alloy:
     privileged: true
   stabilityLevel: public-preview
 #  stabilityLevel: experimental
+  enableReporting: false
   extraPorts:
     - name: "grpc"
       port: 4317

@@ -20,6 +20,10 @@ grafana:
         nodeGraph:
           enabled: true
       version: 1
+  grafana.ini:
+    analytics:
+      reporting_enabled: false
+      check_for_updates: false
 kubeControllerManager:
   enabled: false
 kubeEtcd:
